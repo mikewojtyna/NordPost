@@ -10,7 +10,8 @@ import org.jsoup.nodes.Document;
 public class LoadBring {
 
     public static ArrayList<String> load() throws IOException {
-        String tracking = "00370726203877283728";
+
+        String tracking = "CS833965035NO";
         Connection connect = Jsoup.connect("https://tracking.bring.com/tracking.html?q=" + tracking);
         Document document = connect.get();
 
@@ -34,7 +35,6 @@ public class LoadBring {
 
         // String LatestStatusSubstring = LatestStatus.toString().substring(100,Jsoup.parse(String.valueOf(document.getElementsByClass("sporing-sendingandkolli-latestevent-text"))).toString().indexOf(".")+1);
 
-
         ArrayList<String> Answer = new ArrayList<>();
         Answer.add(0, PackageNumber);
         Answer.add(1, ShipmentNumber);
@@ -49,15 +49,8 @@ public class LoadBring {
         Answer.add(10, LatestStatusDate);
         Answer.add(11, LatestStatus);
 
+        return Answer;
 
-        //System.out.println(Answer);
-
-
-
-       /* Elements allLI = document.select("li");
-        for (Element elem : allLI) {
-            System.out.println(elem.text());*/
-return Answer;
-
-    }}
+    }
+}
 
