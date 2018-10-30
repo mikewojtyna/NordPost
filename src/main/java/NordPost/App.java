@@ -6,8 +6,9 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         //LoadBring.load();
-        //CSV.CsvMaker();
+        CSV.CsvMaker();
 //readCSV.load();
+        //readCSV.load();
 
 
     }

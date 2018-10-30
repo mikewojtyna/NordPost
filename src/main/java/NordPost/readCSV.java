@@ -6,7 +6,7 @@ import java.io.File;
 
 public class readCSV {
 
-    public static void load(){
+    public static String load(){
         String fileName= "ask.csv";
         File file= new File(fileName);
 
@@ -24,6 +24,7 @@ public class readCSV {
         }
 
 
+        return fileName;
     }
 
 }
