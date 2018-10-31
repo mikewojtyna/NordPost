@@ -7,8 +7,9 @@ import java.util.List;
 
 public class App {
 	public static void main(String[] args) throws IOException {
-		// this code produces the same results as previous version
-		List<String> trackingNumbers = Arrays.asList("CS833958785NO");
+		// that's how you can use the new version
+		List<String> trackingNumbers = Arrays.asList("CS833958785NO",
+			"CS833948284NO", "CS833952054NO");
 		// If you want to get all tracking numbers from ask.csv file
 		// uncomment the following line
 		// trackingNumbers = readAllTrackingNumbers();
