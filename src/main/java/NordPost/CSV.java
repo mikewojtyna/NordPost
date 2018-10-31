@@ -1,74 +1,44 @@
 package NordPost;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.Writer;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class CSV {
+	public static void CsvMaker(Path targetFile, List<String>
+		trackingNumbers) throws IOException {
+		try (Writer writer = new FileWriter(targetFile.toFile())) {
+			StatefulBeanToCsv csvWriter = new
+				StatefulBeanToCsvBuilder(writer)
+				.withApplyQuotesToAll(false).build();
+			List<TrackingDocument> trackingDocuments =
+				trackingNumbers.stream().map
+					(CSV::loadTrackingDocument).collect
+					(Collectors.toList());
+			csvWriter.write(trackingDocuments);
+		}
+		catch (CsvRequiredFieldEmptyException |
+			CsvDataTypeMismatchException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-
-    public static void CsvMaker () throws IOException, FileNotFoundException {
-        PrintWriter pw = new PrintWriter(new File("test.csv"));
-        StringBuilder sb = new StringBuilder();
-        sb.append("PackageNumber");
-        sb.append(',');
-        sb.append("ShipmentNumber");
-        sb.append(',');
-        sb.append("NumberOfPackages");
-        sb.append(',');
-        sb.append("SenderReference");
-        sb.append(',');
-        sb.append("ProductName");
-        sb.append(',');
-        sb.append("Weight");
-        sb.append(',');
-        sb.append("Measurements");
-        sb.append(',');
-        sb.append("Sender");
-        sb.append(',');
-        sb.append("Recipient");
-        sb.append(',');
-        sb.append("DeliveryAddress");
-        sb.append(',');
-        sb.append("LatestStatusDate");
-        sb.append(',');
-        sb.append("LatestStatus");
-        sb.append('\n');
-
-
-        sb.append(LoadBring.load().get(0));
-        sb.append(',');
-        sb.append(LoadBring.load().get(1));
-        sb.append(',');
-        sb.append(LoadBring.load().get(2));
-        sb.append(',');
-        sb.append(LoadBring.load().get(3));
-        sb.append(',');
-        sb.append(LoadBring.load().get(4));
-        sb.append(',');
-        sb.append(LoadBring.load().get(5));
-        sb.append(',');
-        sb.append(LoadBring.load().get(6));
-        sb.append(',');
-        sb.append(LoadBring.load().get(7));
-        sb.append(',');
-        sb.append(LoadBring.load().get(8));
-        sb.append(',');
-        sb.append(LoadBring.load().get(9));
-        sb.append(',');
-        sb.append(LoadBring.load().get(10));
-        sb.append(',');
-        sb.append(LoadBring.load().get(11));
-
-        sb.append('\n');
-
-        pw.write(sb.toString());
-        pw.close();
-        System.out.println("done!");
-    }
-
-
-
+	private static TrackingDocument loadTrackingDocument(String
+								     trackingNumber) {
+		try {
+			return LoadBring.load(trackingNumber);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }
